@@ -18,16 +18,16 @@ const App = () => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
-  function createNewNote() {
+  const createNewNote = () => {
     const newNote = {
       id: nanoid(),
       body: "# Type your markdown note's title here",
     };
     setNotes((prevNotes) => [newNote, ...prevNotes]);
     setCurrentNoteId(newNote.id);
-  }
+  };
 
-  function updateNote(text) {
+  const updateNote = (text) => {
     setNotes((oldNotes) =>
       oldNotes.map((oldNote, i) => {
         if (oldNote.id === currentNoteId) {
@@ -39,15 +39,22 @@ const App = () => {
         }
       })
     );
-  }
+  };
 
-  function findCurrentNote() {
+  const deleteNote = (event, noteId) => {
+    event.stopPropagation();
+    setNotes((oldNotes) => {
+      return oldNotes.filter((note) => note.id !== noteId);
+    });
+  };
+
+  const findCurrentNote = () => {
     return (
       notes.find((note) => {
         return note.id === currentNoteId;
       }) || notes[0]
     );
-  }
+  };
 
   return (
     <main>
@@ -58,6 +65,7 @@ const App = () => {
             currentNote={findCurrentNote()}
             setCurrentNoteId={setCurrentNoteId}
             newNote={createNewNote}
+            deleteNote={deleteNote}
           />
           {currentNoteId && notes.length > 0 && (
             <Editor currentNote={findCurrentNote()} updateNote={updateNote} />

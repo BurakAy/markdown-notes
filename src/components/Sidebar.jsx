@@ -12,6 +12,12 @@ const Sidebar = (props) => {
           onClick={() => props.setCurrentNoteId(note.id)}
         >
           <h4 className="text-snippet">{noteName}</h4>
+          <button
+            className="delete-btn"
+            onClick={(event) => props.deleteNote(event, note.id)}
+          >
+            <i className="gg-trash trash-icon"></i>
+          </button>
         </div>
       </div>
     );
